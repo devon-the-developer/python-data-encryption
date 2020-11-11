@@ -45,11 +45,17 @@ def sendToDB(data):
     print(response)
 
 def run():
+    cusName = input("What is the name of the customer? ")
+    cusAge = input("What is their age? ")
+    #Convert strings into bytes
+    cusName = bytes(cusName, 'utf-8')
+    cusAge = bytes(cusAge, 'utf-8')
+
     #Encrypt given data
-    encryptmsg = aesEncrypt(b"Devon", b"28")
+    encryptMsg = aesEncrypt(cusName, cusAge)
 
     #Send Encrypted data to DB
-    sendToDB(encryptmsg)
+    sendToDB(encryptMsg)
 
 
 
