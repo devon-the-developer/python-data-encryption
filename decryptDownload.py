@@ -7,8 +7,9 @@ import requests
 key = b"Secret byte key "
 
 
-def getFromDB():
-    url = "https://crypto-ba4d.restdb.io/rest/contacts"
+def getFromDB(userID):
+    #Request json where UID is userID
+    url = "https://crypto-ba4d.restdb.io/rest/contacts" + '?q={"UID": ' + userID + "}"
 
     headers = {
     'content-type': "application/json",
@@ -38,15 +39,18 @@ def decrypt(jsondata):
         age = decodePiece(ageEn, cipher)
 
         #Comments just to check its working
+        print("\nDecrypted Response: \n-----------------")
+
         print("The name is: ", name)
         print("The age is: ", age)
     except (ValueError, KeyError):
         print("Incorrect Decryption")
 
 def run():
-    response = getFromDB()
+    userID = input("Enter the UserID: ")
+    response = getFromDB(userID)
     responsejson = response.json()
 
-    print("______: ", responsejson[-1])
+    print("Encrypted Response: ", responsejson[-1])
 
     decrypt(responsejson)

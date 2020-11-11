@@ -46,7 +46,7 @@ def sendToDB(data):
 
 def run():
     #Encrypt given data
-    encryptmsg = aesEncrypt(b"Nathaniel", b"70")
+    encryptmsg = aesEncrypt(b"Devon", b"28")
 
     #Send Encrypted data to DB
     sendToDB(encryptmsg)
