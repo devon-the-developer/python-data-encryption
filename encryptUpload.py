@@ -21,7 +21,6 @@ def aesEncrypt(name, age, hash):
     name = name
     age = age
     hash = bytes(hash, 'utf-8')
-    print("compare", type(name), type(age), type(hash))
     key = b"Secret byte key "  # 16 bytes long
 
     # set cipher to use and encrypt individual data
@@ -36,8 +35,6 @@ def aesEncrypt(name, age, hash):
     nameEn = b64encode(ne_bytes).decode()
     ageEn = b64encode(ae_bytes).decode()
     hashEn = b64encode(hash_bytes).decode()
-    print("String of encoded hash", hashEn)
-    print("result: ", nameEn, ageEn, iv, hashEn)
     return (nameEn, ageEn, iv, hashEn)
 
 
@@ -58,25 +55,19 @@ def sendToDB(data):
 def run():
     cusName = input("What is the name of the customer? ")
     cusAge = input("What is their age? ")
-    # join name and age together as strings
-    hashingString = cusName + cusAge
+    # join variables together to be hashed later
+    strOfData = cusName + cusAge
     # Convert strings into bytes
     cusName = bytes(cusName, 'utf-8')
     cusAge = bytes(cusAge, 'utf-8')
 
     # convert to bytes
-    bHashString = bytes(hashingString, 'utf-8')
+    bHashString = bytes(strOfData, 'utf-8')
     print("String to be hashed in bytes",bHashString)
 
     # hash the result
     hashOfStrings = hash(bHashString)
     print("Result of hashing byte string", hashOfStrings)
-    # send that hash to be encoded
-
-    # hashing plain text
-    ptHash = hash(cusName + cusAge)
-    print("hash before encoding.. ", ptHash)
-
 
     # Encrypt given data
     encryptMsg = aesEncrypt(cusName, cusAge, hashOfStrings)
@@ -88,6 +79,5 @@ def run():
 def hash(plainText):
     hash_object = SHA256.new(data=plainText)
     print("hexdigest",hash_object.hexdigest())
-    print("digest",hash_object.digest())
     return hash_object.hexdigest()
 
