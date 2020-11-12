@@ -71,7 +71,8 @@ def run():
     ptHash = hash(returnedObject[0])
     print("2",ptHash)
     print("3", returnedObject[1])
-    #compareHashes(, ptHash)
+
+    compareHashes(returnedObject[1], ptHash)
 
 def hash(byteText):
     #print(type(byteText))
