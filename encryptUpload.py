@@ -1,11 +1,12 @@
 import json
+import requests
+
 from base64 import b64encode
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 from Crypto.Hash import SHA256
 from Crypto.Random import get_random_bytes
 
-import requests
 from Crypto import Random
 
 

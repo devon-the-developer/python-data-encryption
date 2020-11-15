@@ -5,6 +5,7 @@ from Crypto.Util.Padding import unpad
 from Crypto.Hash import SHA256
 
 import requests
+import update
 key = b"Secret byte key "
 
 
@@ -65,6 +66,8 @@ def run():
     print("Downloaded Hash: ", downloadedHash)
 
     compareHashes(downloadedHash, ptHash)
+    
+    update.run()
 
 def hash(byteText):
     hash_object = SHA256.new(data=byteText)
