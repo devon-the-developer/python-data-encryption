@@ -47,10 +47,9 @@ def decrypt(jsondata):
 
         print("The name is: ", name)
         print("The age is: ", age)
-        bData = bytes(name, 'utf-8') + bytes(age, 'utf-8')
     except (ValueError, KeyError):
         print("Incorrect Decryption")
-    return (bData, hashPlain)
+    return (name, age, hashPlain)
 
 def run():
     userID = input("Enter the UserID: ")
@@ -60,14 +59,16 @@ def run():
     print("Database Response: ", responsejson)
 
     cusInfo = decrypt(responsejson)
-    downloadedHash = cusInfo[1]
-    ptHash = hash(cusInfo[0])
+    cusUID = responsejson[0]['UID']
+    cusName = cusInfo[0]
+    cusAge = cusInfo[1]
+    downloadedHash = cusInfo[2]
+    ptHash = hash(bytes(cusName, 'utf-8') + bytes(cusAge, 'utf-8'))
     print("Hash of Plaintext: ",ptHash)
     print("Downloaded Hash: ", downloadedHash)
 
     compareHashes(downloadedHash, ptHash)
-    
-    update.run()
+    updateInfo(cusName, cusAge, cusUID)
 
 def hash(byteText):
     hash_object = SHA256.new(data=byteText)
@@ -78,3 +79,15 @@ def compareHashes(databaseHash, textHash):
         print("Hashes equal")
     else:
         print("Hashes not equal")
+
+def updateInfo (cusName, cusAge, cusUID):
+    print("CusInfo: ", cusName + " " + cusAge)
+    
+    updateQ = input("Would you like to update user info? (y/n)")
+    if (updateQ == "y"):
+        update.run({0: cusName, 1: cusAge, 2: cusUID})
+    elif (updateQ == "n"):
+        print("Ending program")
+    else:
+        print("That is not a valid response.")
+        updateInfo(cusName, cusAge, cusUID)
