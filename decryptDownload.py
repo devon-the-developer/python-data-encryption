@@ -60,6 +60,7 @@ def run():
 
     cusInfo = decrypt(responsejson)
     cusUID = responsejson[0]['UID']
+    dbID = responsejson[0]['_id']
     cusName = cusInfo[0]
     cusAge = cusInfo[1]
     downloadedHash = cusInfo[2]
@@ -68,7 +69,7 @@ def run():
     print("Downloaded Hash: ", downloadedHash)
 
     compareHashes(downloadedHash, ptHash)
-    updateInfo(cusName, cusAge, cusUID)
+    updateInfo(cusName, cusAge, cusUID, dbID)
 
 def hash(byteText):
     hash_object = SHA256.new(data=byteText)
@@ -80,14 +81,14 @@ def compareHashes(databaseHash, textHash):
     else:
         print("Hashes not equal")
 
-def updateInfo (cusName, cusAge, cusUID):
-    print("CusInfo: ", cusName + " " + cusAge)
+def updateInfo (cusName, cusAge, cusUID, dbID):
+    print("CusInfo: ", cusName + " " + cusAge + " " + dbID)
     
     updateQ = input("Would you like to update user info? (y/n)")
     if (updateQ == "y"):
-        update.run({0: cusName, 1: cusAge, 2: cusUID})
+        update.run({0: cusName, 1: cusAge, 2: cusUID, 3: dbID})
     elif (updateQ == "n"):
         print("Ending program")
     else:
         print("That is not a valid response.")
-        updateInfo(cusName, cusAge, cusUID)
+        updateInfo(cusName, cusAge, cusUID, dbID)

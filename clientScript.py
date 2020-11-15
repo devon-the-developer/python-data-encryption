@@ -8,7 +8,7 @@ def runOption():
     loadscript.casefold()
 
     if (loadscript == 'u'):
-        encryptUpload.run()
+        encryptUpload.run(False, {})
     elif(loadscript == 'd'):
         decryptDownload.run()
     else:

@@ -39,8 +39,8 @@ def aesEncrypt(name, age, hash):
     return (nameEn, ageEn, iv, hashEn)
 
 
-def sendToDB(data):
-    url = "https://crypto-ba4d.restdb.io/rest/contacts"
+def sendToDB(data, url, updateCus):
+    #url = "https://crypto-ba4d.restdb.io/rest/contacts"
 
     payload = json.dumps({"Name": data[0], "Age": data[1], "iv": data[2], "Hash": data[3]})
     headers = {
@@ -49,13 +49,32 @@ def sendToDB(data):
         'cache-control': "no-cache"
     }
 
-    response = requests.request("POST", url, data=payload, headers=headers)
-    print(response)
+    if(updateCus == True):
+        restType = "PUT"
+    else: 
+        restType = "POST"
+
+    print(restType)
+    response = requests.request(restType, url, data=payload, headers=headers)
+    print(response)    
 
 
-def run():
-    cusName = input("What is the name of the customer? ")
-    cusAge = input("What is their age? ")
+def run(updateCus, info):
+
+    if (updateCus == True):
+        cusName = info[0]
+        cusAge = info[1]
+        cusUID = info[2]
+        dbID = info[3]
+        print(cusName, cusAge, cusUID)
+        url = "https://crypto-ba4d.restdb.io/rest/contacts/" + dbID
+        print(url)
+    else:
+        cusName = input("What is the name of the customer? ")
+        cusAge = input("What is their age? ")
+        url = "https://crypto-ba4d.restdb.io/rest/contacts"
+
+
     # join variables together to be hashed later
     strOfData = cusName + cusAge
     # Convert strings into bytes
@@ -74,7 +93,8 @@ def run():
     encryptMsg = aesEncrypt(cusName, cusAge, hashOfStrings)
 
     # Send Encrypted data to DB
-    sendToDB(encryptMsg)
+    print(encryptMsg, url, updateCus)
+    sendToDB(encryptMsg, url, updateCus)
 
 
 def hash(plainText):
